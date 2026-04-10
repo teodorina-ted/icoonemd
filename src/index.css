@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --pink-deep: 350 55% 36%;
+    --pink-mid: 350 35% 56%;
+    --pink-bg: 350 60% 91%;
+    --dark: 0 0% 12%;
+    --text-color: 0 0% 20%;
+
+    --background: 350 30% 96%;
+    --foreground: 0 0% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+
+    --primary: 350 55% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 350 60% 91%;
+    --secondary-foreground: 350 55% 36%;
+
+    --muted: 350 20% 96%;
+    --muted-foreground: 0 0% 47%;
+
+    --accent: 350 55% 36%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 350 30% 88%;
+    --input: 350 30% 88%;
+    --ring: 350 55% 36%;
+
+    --radius: 22px;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Nunito", sans-serif;
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+/* ===================== SCROLL REVEAL ===================== */
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.rv.vis {
+  opacity: 1;
+  transform: none;
+}
+.d1 { transition-delay: 0.05s; }
+.d2 { transition-delay: 0.15s; }
+.d3 { transition-delay: 0.25s; }
+
+/* ===================== MOBILE SCROLLBAR ===================== */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(131, 39, 52, 0.25);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(131, 39, 52, 0.45);
+  }
+}
+
+/* ===================== HERO MOBILE TEXT SIZING ===================== */
+@media (max-width: 767px) {
+  .hero-heading {
+    font-size: 2.8rem !important;
+    line-height: 1.05;
+  }
+  .hero-brand {
+    font-size: 2.4rem !important;
+  }
+  .hero-tag {
+    font-size: 1rem !important;
+  }
+}
+
+/* ===================== TABLET LAYOUT FIXES (768–1024px) ===================== */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-heading {
+    font-size: 3.5rem !important;
+  }
+  .hero-brand {
+    font-size: 2.8rem !important;
+  }
+}
