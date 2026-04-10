@@ -7,134 +7,120 @@ interface Props {
 
 const WORKER_URL = "https://icoone-email-handler.v-fleure.workers.dev";
 
-const ContactsSection = ({ selectedService }: Props) => {
+const LeadFormSection = ({ selectedService }: Props) => {
   const { t } = useLanguage();
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (selectedService && selectedService !== "General Inquiry") {
-      setMsg(`Buna, doresc detalii despre masajul "${selectedService}".`);
+      setMsg(t(`Здравствуйте, я хочу узнать больше о процедуре "${selectedService}".`, 
+               `Bună, doresc detalii despre masajul "${selectedService}".`));
     }
-  }, [selectedService]);
+  }, [selectedService, t]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !contact.trim()) return;
 
     setSending(true);
+    setError(false);
 
-    const trimmedName = name.trim();
-    const trimmedContact = contact.trim();
-    const trimmedMsg = msg.trim() || "Fără mesaj";
-    const service = selectedService || "General";
+    const payload = {
+      name: name.trim(),
+      contact: contact.trim(),
+      message: msg.trim() || "Fără mesaj",
+      service: selectedService || "General",
+    };
 
-    // 1. Send to Cloudflare Worker (email delivery)
     try {
-      await fetch(WORKER_URL, {
+      // 1. Încercăm trimiterea prin API
+      const response = await fetch(WORKER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: trimmedName,
-          contact: trimmedContact,
-          message: trimmedMsg,
-          service,
-        }),
+        body: JSON.stringify(payload),
       });
-    } catch {
-      // Cloudflare failed silently — WhatsApp below still fires
+
+      if (!response.ok) throw new Error("API Error");
+
+      setSent(true);
+      // Resetăm câmpurile doar la succes
+      setName("");
+      setContact("");
+      setMsg("");
+    } catch (err) {
+      console.error("Submission failed:", err);
+      setError(true); 
+      // Chiar dacă eșuează email-ul, deschidem WhatsApp ca fallback
+      const whatsappText = `🔥 LEAD NOU (${payload.service}):\n👤 Nume: ${payload.name}\n📞 Contact: ${payload.contact}\n💬 Mesaj: ${payload.message}`;
+      window.open(`https://wa.me/37368323861?text=${encodeURIComponent(whatsappText)}`, "_blank");
+    } finally {
+      setSending(false);
+      setTimeout(() => { setSent(false); setError(false); }, 6000);
     }
-
-    // 2. Always open WhatsApp with pre-filled message
-    const whatsappText = `🔥 LEAD NOU (${service}):\n👤 Nume: ${trimmedName}\n📞 Contact: ${trimmedContact}\n💬 Mesaj: ${trimmedMsg}`;
-    window.open(`https://wa.me/37368323861?text=${encodeURIComponent(whatsappText)}`, "_blank");
-
-    // 3. Reset form after both actions triggered
-    setSent(true);
-    setName("");
-    setContact("");
-    setMsg("");
-    setSending(false);
-    setTimeout(() => setSent(false), 5000);
   };
 
   return (
-    <section id="contacts" className="bg-pink-bg py-12 md:py-20 px-5 md:px-16">
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left: Contact info + Map */}
-        <div className="rv bg-card rounded-2xl p-6 md:p-8 shadow-md flex flex-col gap-5">
-          <div>
-            <div className="text-xs font-extrabold uppercase tracking-widest text-pink-mid mb-1.5">
-              {t("Контактеле ноастре", "Contactele noastre").toUpperCase()}
-            </div>
-            <a href="tel:+37368323861" className="text-2xl md:text-3xl font-black text-pink-deep block mb-2">+373 68 323 861</a>
-            <div className="text-base text-foreground">
-              {t("Адрес", "Adresă")}: <span className="font-bold text-pink-deep">{t("Кишинёв, ул. Букурешть 64", "Chișinău, str. București 64")}</span>
-            </div>
-            <div className="text-base text-foreground mt-1">
-              {t("Режим работы", "Program")}: <span className="font-bold text-pink-deep">{t("Пн–Сб: 09:00 – 18:00", "Lun–Sâ: 09:00 – 18:00")}</span>
-            </div>
-          </div>
-          {/* Map */}
-          <div className="rounded-xl overflow-hidden flex-1 min-h-[220px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2720.123456789!2d28.8322!3d47.0205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDfCsDAxJzEzLjgiTiAyOMKwNDknNTUuOSJF!5e0!3m2!1sen!2smd!4v123456789"
-              title="ICOONE Location"
-              className="w-full h-full border-none block min-h-[220px]"
-            />
-          </div>
-        </div>
-
-        {/* Right: Lead Form */}
-        <div className="rv bg-card rounded-2xl p-6 md:p-8 shadow-md flex flex-col">
-          <div id="lead-form-anchor" />
-          <h2 className="text-xl md:text-2xl font-black text-pink-deep mb-6 text-center">
-            {t("Отправьте заявку", "Trimite o cerere")}
+    <section id="book" className="py-10 md:py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="rv bg-white rounded-[35px] shadow-xl p-8 md:p-12 border border-pink-50">
+          
+          <h2 className="text-2xl md:text-3xl font-black text-[#832734] mb-8 text-center uppercase">
+            {t("Записаться на процедуру", "Înscriere la procedură")}
           </h2>
+
+          {/* Mesaj de Succes */}
           {sent && (
-            <div className="bg-pink-bg text-pink-deep text-center font-bold py-3 px-4 rounded-xl mb-4">
-              {t("Спасибо! Мы свяжемся с вами в ближайшее время.", "Mulțumim! Vă vom contacta în curând.")}
+            <div className="bg-green-50 text-green-700 text-center font-bold py-4 px-6 rounded-2xl mb-6 border border-green-100">
+              {t("Спасибо! Ваša заявка отправлена.", "Mulțumim! Cererea a fost trimisă.")}
             </div>
           )}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 flex-1">
-            <input type="hidden" value={selectedService} />
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={t("Имя*", "Nume*")}
-              required
-              maxLength={100}
-              className="w-full px-5 py-4 border-2 border-pink-bg rounded-2xl font-nunito text-base text-foreground bg-pink-bg outline-none focus:border-pink-deep focus:bg-card transition-colors"
-            />
-            <input
-              type="text"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              placeholder={t("Телефон*", "Telefon*")}
-              required
-              maxLength={255}
-              className="w-full px-5 py-4 border-2 border-pink-bg rounded-2xl font-nunito text-base text-foreground bg-pink-bg outline-none focus:border-pink-deep focus:bg-card transition-colors"
-            />
+
+          {/* Mesaj de Eroare */}
+          {error && (
+            <div className="bg-red-50 text-[#832734] text-center font-bold py-4 px-6 rounded-2xl mb-6 border border-red-100">
+              {t("Ошибка при отправке. Пожалуйста, позвоните нам: +373 68 323 861", "Eroare la trimitere. Vă rugăm să ne sunați: +373 68 323 861")}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder={t("Имя*", "Nume*")}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full px-6 py-4 rounded-2xl bg-[#fff5f6] text-[#832734] font-bold outline-none border-2 border-transparent focus:border-[#ff91a4] transition-all"
+              />
+              <input
+                type="text"
+                placeholder={t("Телефон*", "Telefon*")}
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                required
+                className="w-full px-6 py-4 rounded-2xl bg-[#fff5f6] text-[#832734] font-bold outline-none border-2 border-transparent focus:border-[#ff91a4] transition-all"
+              />
+            </div>
+            
             <textarea
+              placeholder={t("Сообщение", "Mesaj")}
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
-              placeholder={t("Сообщение", "Mesaj")}
-              rows={4}
-              maxLength={1000}
-              className="w-full px-5 py-4 border-2 border-pink-bg rounded-2xl font-nunito text-base text-foreground bg-pink-bg outline-none focus:border-pink-deep focus:bg-card resize-y min-h-[100px] transition-colors"
+              rows={3}
+              className="w-full px-6 py-4 rounded-2xl bg-[#fff5f6] text-[#832734] font-bold outline-none border-2 border-transparent focus:border-[#ff91a4] transition-all resize-none"
             />
+
             <button
               type="submit"
               disabled={sending}
-              className="w-full bg-green-500 text-white border-none py-4 rounded-full font-nunito text-base font-black cursor-pointer hover:bg-green-600 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-60 mt-auto"
+              className="w-full bg-[#25D366] text-white py-4 rounded-full text-lg font-black hover:bg-[#128C7E] transition-all disabled:opacity-50"
             >
-              {sending
-                ? t("Отправка...", "Se trimite...")
-                : t("Отправить", "Trimite")}
+              {sending ? t("Отправка...", "Se trimite...") : t("ОТПRAVITI ЧЕРЕЗ WHATSAPP", "PROGRAMARE PRIN WHATSAPP")}
             </button>
           </form>
         </div>
@@ -143,4 +129,4 @@ const ContactsSection = ({ selectedService }: Props) => {
   );
 };
 
-export default ContactsSection;
+export default LeadFormSection;

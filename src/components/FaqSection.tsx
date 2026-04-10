@@ -47,24 +47,56 @@ const FaqSection = () => {
   ];
 
   return (
-    <section id="faq" className="bg-pink-bg py-12 md:py-20 px-5 md:px-16 text-center">
-      <h2 className="rv text-[1.7rem] md:text-[2.9rem] font-black text-pink-deep mb-2">{t("Часто задаваемые вопросы", "Întrebări frecvente")}</h2>
-      <p className="rv text-base text-muted-foreground mb-10">{t("Ответы на самые популярные вопросы о процедуре ICOONE", "Răspunsuri la cele mai frecvente întrebări despre procedura ICOONE")}</p>
-      <div className="rv max-w-[760px] mx-auto flex flex-col gap-3 text-left">
-        {faqs.map((faq, i) => (
-          <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-sm">
-            <div
-              className="flex justify-between items-center px-6 py-4 cursor-pointer font-bold text-[0.97rem] text-pink-deep select-none hover:bg-pink-bg transition-colors"
+    // Milky background #fffafb to match index.css
+    <section id="faq" className="bg-[#fffafb] py-14 md:py-20 px-6 md:px-16 text-center">
+      <div className="max-w-[780px] mx-auto">
+        {/* Adjusted size: smaller, more elegant heading */}
+        <h2 className="rv text-[1.5rem] md:text-[2.2rem] font-black text-[#832734] mb-2 uppercase tracking-tight">
+          {t("Часто задаваемые вопросы", "Întrebări frecvente")}
+        </h2>
+        <p className="rv text-sm md:text-base text-[#832734] opacity-50 mb-10 font-medium">
+          {t("Ответы на самые популярные вопросы о процедуре ICOONE", "Răspunsuri la cele mai frecvente întrebări despre procedura ICOONE")}
+        </p>
+        
+        <div className="rv flex flex-col gap-3.5 text-left">
+          {faqs.map((faq, i) => (
+            <div 
+              key={i} 
+              className={`group bg-white rounded-[28px] overflow-hidden transition-all duration-300 border border-transparent cursor-pointer hover:shadow-lg hover:-translate-y-0.5 ${
+                openIndex === i ? "shadow-md border-[#ff91a4]/10" : "shadow-sm"
+              }`}
               onClick={() => setOpenIndex(openIndex === i ? null : i)}
             >
-              <span>{faq.q}</span>
-              <span className={`text-xl text-pink-mid flex-shrink-0 ml-4 transition-transform duration-300 ${openIndex === i ? "rotate-45" : ""}`}>+</span>
+              <div className="flex justify-between items-center px-6 py-4.5 md:px-8 md:py-5 select-none">
+                <span className={`font-bold text-[0.95rem] md:text-lg transition-colors duration-300 ${
+                  openIndex === i ? "text-[#832734]" : "text-[#832734]/80 group-hover:text-[#832734]"
+                }`}>
+                  {faq.q}
+                </span>
+                
+                {/* Round Pink Spot for the + toggle */}
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ml-4 ${
+                  openIndex === i ? "bg-[#832734]" : "bg-[#fff5f6] group-hover:bg-[#ff91a4]/20"
+                }`}>
+                  <span className={`text-xl font-light leading-none transition-transform duration-300 ${
+                    openIndex === i ? "text-white rotate-45" : "text-[#832734]"
+                  }`}>
+                    +
+                  </span>
+                </div>
+              </div>
+              
+              <div 
+                className="transition-all duration-500 ease-in-out overflow-hidden" 
+                style={{ maxHeight: openIndex === i ? '500px' : '0px' }}
+              >
+                <div className="px-6 md:px-8 pb-6 pt-0 text-sm md:text-[0.95rem] text-[#832734] opacity-70 leading-relaxed space-y-2.5 font-medium">
+                  {faq.a}
+                </div>
+              </div>
             </div>
-            <div className="overflow-hidden transition-all duration-400" style={{ maxHeight: openIndex === i ? 600 : 0 }}>
-              <div className="px-6 pb-5 pt-1.5 text-sm text-muted-foreground leading-relaxed space-y-2">{faq.a}</div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

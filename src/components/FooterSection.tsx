@@ -44,20 +44,22 @@ const FooterSection = () => {
   ];
 
   return (
-    <footer className="bg-dark text-gray-400 pt-[70px] px-5 md:px-16 relative">
-      {/* Scroll top */}
+    <footer className="bg-[#1a1a1a] text-gray-400 pt-[70px] px-5 md:px-16 relative">
+      {/* Scroll to Top - Deep Wine Spot */}
       <div
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="absolute -top-[22px] left-1/2 -translate-x-1/2 bg-pink-deep w-11 h-11 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:-translate-y-1 transition-transform z-[2]"
+        className="absolute -top-[22px] left-1/2 -translate-x-1/2 bg-[#832734] w-11 h-11 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:-translate-y-1 transition-transform z-[2]"
       >
         <span className="text-white text-lg font-black">↑</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-8 md:gap-10 pb-12 border-b border-white/[0.08]">
 
-        {/* Brand column */}
+        {/* Brand column - ICOONE with Light Pink Milky color */}
         <div>
-          <div className="text-3xl font-black text-white mb-3.5 tracking-wide">EFFLEURE</div>
+          <div className="text-3xl font-black text-[#eabdc3] mb-3.5 tracking-wide uppercase">
+            ICOONE
+          </div>
           <p className="text-sm leading-relaxed text-gray-400 mb-5">
             {t(
               "Итальянская технология аппаратного массажа для красоты и здоровья вашего тела.",
@@ -72,7 +74,7 @@ const FooterSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={s.label}
-                className="w-10 h-10 bg-white/[0.08] rounded-full flex items-center justify-center hover:bg-pink-deep hover:-translate-y-1 transition-all text-gray-400 hover:text-white"
+                className="w-10 h-10 bg-white/[0.05] rounded-full flex items-center justify-center hover:bg-[#832734] hover:-translate-y-1 transition-all text-gray-400 hover:text-[#fff5f6]"
               >
                 {s.icon}
               </a>
@@ -80,20 +82,20 @@ const FooterSection = () => {
           </div>
         </div>
 
-        {/* Col 1: Navigation */}
+        {/* Navigation - Auto Language */}
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">
+          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4 opacity-50">
             {t("Навигация", "Navigare")}
           </h4>
           <ul className="flex flex-col gap-2.5">
             {[
-              { href: "#what",       ru: "О ICOONE",       ro: "Despre ICOONE" },
-              { href: "#advantages", ru: "Преимущества",   ro: "Avantaje" },
-              { href: "#procedure",  ru: "Процедура",      ro: "Procedură" },
-              { href: "#faq",        ru: "FAQ",            ro: "FAQ" },
+              { href: "#what",      ru: "О ICOONE",       ro: "Despre ICOONE" },
+              { href: "#advantages", ru: "Преимущества",    ro: "Avantaje" },
+              { href: "#procedure",  ru: "Процедура",       ro: "Procedură" },
+              { href: "#faq",        ru: "FAQ",             ro: "FAQ" },
             ].map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="text-sm text-gray-400 hover:text-pink-mid transition-colors">
+                <a href={l.href} className="text-sm text-gray-400 hover:text-[#ff91a4] transition-colors">
                   {t(l.ru, l.ro)}
                 </a>
               </li>
@@ -101,19 +103,19 @@ const FooterSection = () => {
           </ul>
         </div>
 
-        {/* Col 2: Choose us */}
+        {/* Service column - Auto Language */}
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">
+          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4 opacity-50">
             {t("Выберите нас", "Alegeți-ne")}
           </h4>
           <ul className="flex flex-col gap-2.5">
             {[
               { href: "#types",  ru: "Виды массажа", ro: "Tipuri de masaj" },
-              { href: "#prices", ru: "Цены",         ro: "Prețuri" },
-              { href: "#book",   ru: "Записаться",   ro: "Programare" },
+              { href: "#prices", ru: "Цены",          ro: "Prețuri" },
+              { href: "#book",   ru: "Записаться",    ro: "Programare" },
             ].map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="text-sm text-gray-400 hover:text-pink-mid transition-colors">
+                <a href={l.href} className="text-sm text-gray-400 hover:text-[#ff91a4] transition-colors">
                   {t(l.ru, l.ro)}
                 </a>
               </li>
@@ -121,9 +123,9 @@ const FooterSection = () => {
           </ul>
         </div>
 
-        {/* Col 3: Contacts */}
+        {/* Contacts - Auto Language */}
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">
+          <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4 opacity-50">
             {t("Контакты", "Contacte")}
           </h4>
           <ul className="flex flex-col gap-2.5">
@@ -132,42 +134,41 @@ const FooterSection = () => {
                 href="https://maps.google.com/?q=Bucuresti+64+Chisinau"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-gray-400 hover:text-pink-mid transition-colors"
+                className="text-sm text-gray-400 hover:text-[#ff91a4] transition-colors"
               >
                 {t("ул. Букурешть 64", "str. București 64")}
               </a>
             </li>
             <li>
-              <a href="tel:+37368323861" className="text-sm text-gray-400 hover:text-pink-mid transition-colors">
+              <a href="tel:+37368323861" className="text-sm text-gray-400 hover:text-[#ff91a4] transition-colors">
                 +373 68 323 861
               </a>
             </li>
             <li>
-              <a href="mailto:icoone.md@gmail.com" className="text-sm text-gray-400 hover:text-pink-mid transition-colors">
+              <a href="mailto:icoone.md@gmail.com" className="text-sm text-gray-400 hover:text-[#ff91a4] transition-colors">
                 icoone.md@gmail.com
               </a>
             </li>
           </ul>
         </div>
-
       </div>
 
-      {/* Bottom bar */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-5 text-xs text-gray-500 gap-2.5 flex-wrap">
+      {/* Bottom Legal - Auto Switch Logic Applied Here */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-6 text-[11px] text-gray-500 gap-4 flex-wrap">
         <p>
           {t(
-            "© 2026 EFFLEURE. Все права защищены. S.R.L. IDNO 1025606008701.",
-            "© 2026 EFFLEURE. Toate drepturile rezervate. S.R.L. IDNO 1025606008701."
+            "© 2026 ICOONE. Все права защищены. S.R.L. IDNO 1025606008701.",
+            "© 2026 ICOONE. Toate drepturile rezervate. S.R.L. IDNO 1025606008701."
           )}
         </p>
-        <div className="flex gap-5 flex-wrap">
-          <Link to="/privacy" className="text-gray-500 hover:text-pink-mid transition-colors">
+        <div className="flex gap-6 flex-wrap">
+          <Link to="/privacy" className="hover:text-[#fff5f6] transition-colors">
             {t("Политика конфиденциальности", "Politica de confidențialitate")}
           </Link>
-          <Link to="/terms" className="text-gray-500 hover:text-pink-mid transition-colors">
+          <Link to="/terms" className="hover:text-[#fff5f6] transition-colors">
             {t("Условия и положения", "Termeni și condiții")}
           </Link>
-          <Link to="/cookies" className="text-gray-500 hover:text-pink-mid transition-colors">
+          <Link to="/cookies" className="hover:text-[#fff5f6] transition-colors">
             {t("Политика Cookie", "Politica Cookie")}
           </Link>
         </div>
